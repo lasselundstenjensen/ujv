@@ -1,3 +1,5 @@
+[![Generate User Journey HTML](https://github.com/lasselundstenjensen/ujv/actions/workflows/generate_ujv.yml/badge.svg?branch=main)](https://github.com/lasselundstenjensen/ujv/actions/workflows/generate_ujv.yml)
+
 # User Journey Visualiser (UJV)
 
 This tool generates a visual representation of a user journey from a simple markdown file.
