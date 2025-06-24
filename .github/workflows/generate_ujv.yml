@@ -1,0 +1,38 @@
+name: Generate User Journey HTML
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x' # Use the latest Python 3.x
+
+    - name: Get current date and persona name
+      id: get_info
+      run: |
+        DATE=$(date +%Y-%m-%d)
+        PERSONA=$(grep -A 1 "## Persona" sample_data_engineer_journey.md | tail -n 1 | xargs)
+        echo "Generated filename: ${DATE}-${PERSONA}.html"
+        echo "output_filename=${DATE}-${PERSONA}.html" >> $GITHUB_OUTPUT
+      working-directory: ${{ github.workspace }}
+
+    - name: Generate HTML
+      run: python ujv_parser.py sample_data_engineer_journey.md -o ${{ steps.get_info.outputs.output_filename }}
+      working-directory: ${{ github.workspace }}
+
+    - name: Upload HTML artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: user-journey-html
+        path: ${{ steps.get_info.outputs.output_filename }}
+        retention-days: 5
+      working-directory: ${{ github.workspace }}
