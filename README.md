@@ -1,73 +1,125 @@
 # User Journey Visualiser (UJV)
 
-This tool parses a markdown description of a user journey and generates a beautiful, interactive flowchart visualisation (HTML+SVG) for teams building large platforms.
+This tool generates a visual representation of a user journey from a simple markdown file.
 
-## Features
-- Parse journeys with personas, events, and capabilities from markdown
-- Render as a flowchart (using Mermaid.js)
-- Each event is a node with title, description, and optional icon
-- Capabilities are shown as colored badges (state: Not started, In development, In testing, In production)
-- Persona is shown at the top
-- Download the SVG visualisation
+## Markdown Format for User Journeys
+
+The markdown file should be structured into `Persona` and `Events` sections. Each event can contain multiple `Capabilities`.
+
+### 1. Persona
+
+Start with a top-level heading for the persona:
+
+```markdown
+## Persona
+
+[Persona Name]
+```
+
+Example:
+
+```markdown
+## Persona
+
+Data Engineer
+```
+
+### 2. Events
+
+Define events using a level 3 heading. Each event can have an optional description and an optional icon.
+
+```markdown
+### [Event Title]
+
+[Event Description]
+[Optional Icon (e.g., 🚀, 🔔, 🗄️, 🧹, 🏷️)]
+```
+
+Example:
+
+```markdown
+### Ingest raw data
+
+Collect raw data from multiple sources (APIs, databases, files)
+🗄️
+```
+
+### 3. Capabilities
+
+Under each event, define capabilities using a level 4 heading. Each capability requires a title, description, and state. It can optionally include a link and an edge text.
+
+```markdown
+#### [Capability Title]
+
+[Capability Description]
+[State (e.g., Not started, In development, In testing, release candidate, In production)]
+[Optional Link (URL)]
+[Optional Edge Text (text displayed on the edge connecting event to capability)]
+```
+
+Example:
+
+```markdown
+#### Data ingestion pipeline
+
+Automates data collection and storage
+In production
+https://github.com/org/data-ingest
+Data Flow
+```
+
+- **State**: The state determines the color of the capability node. Supported states are: `Not started`, `In development`, `In testing, release candidate`, `In production`.
+- **Link**: If provided, the link will be displayed as a Material 3 chip within the capability node. The capability node will also be clickable, navigating to this URL.
+- **Edge Text**: If provided, this text will appear on the edge connecting the event node to the capability node. The edge will be an open line (no arrow).
+
+## Example Markdown Structure
+
+```markdown
+# User Journey
+
+## Persona
+
+Data Engineer
+
+## Events
+
+### Ingest raw data
+
+Collect raw data from multiple sources (APIs, databases, files)
+🗄️
+
+#### Data ingestion pipeline
+
+Automates data collection and storage
+In production
+https://github.com/org/data-ingest
+Data Flow
+
+### Clean and validate data
+
+Apply data quality checks and transformations
+🧹
+
+#### Data validation capability
+
+Ensures data meets quality standards
+In testing, release candidate
+https://github.com/org/data-validate
+Validation Check
+```
 
 ## Usage
 
-1. Write your user journey in markdown (see format below).
-2. Run the parser to generate the HTML visualisation:
+To generate the HTML visualization, run the `ujv_parser.py` script with your markdown file and an output HTML file:
 
 ```bash
-python ujv_parser.py your_journey.md -o user_journey.html
+python ujv_parser.py your_journey.md -o output_journey.html
 ```
+
+Example:
 
 ```bash
 python ujv_parser.py sample_data_engineer_journey.md -o data_engineer_journey.html
 ```
 
-3. Open `user_journey.html` in your browser. Click the download button to save as SVG.
-
-## Markdown Format Example
-
-```
-# User Journey
-
-## Persona
-
-Data Scientist
-
-## Events
-
-### Select dataset
-
-User selects a dataset using Databricks
-🗂️
-
-#### Data access capability
-
-Allows reading data from Databricks
-Not started
-https://github.com/org/data-access
-
-### Train model
-
-User trains the model
-🤖
-
-#### Training capability
-
-Enables model training
-In development
-https://github.com/org/model-train
-```
-
-- Icons are optional (use emoji or unicode icons)
-- Capabilities can have a link to source code (optional)
-
-## Requirements
-- Python 3.7+
-- No external dependencies required
-
-## Customisation
-- Mermaid.js is loaded from CDN (see HTML template in `ujv_parser.py`)
-- You can adjust styles in the HTML template
-
----
+The generated HTML file will include a Mermaid.js flowchart styled with Google Material Web Components, featuring a dark theme, Material 3 card-like nodes, clickable capability links, and custom edge text.
