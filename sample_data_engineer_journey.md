@@ -16,6 +16,7 @@ Collect raw data from multiple sources (APIs, databases, files)
 Automates data collection and storage
 In production
 https://github.com/org/data-ingest
+Data Flow
 
 ### Clean and validate data
 
@@ -27,6 +28,7 @@ Apply data quality checks and transformations
 Ensures data meets quality standards
 In testing, release candidate
 https://github.com/org/data-validate
+Validation Check
 
 ### Enrich data with metadata
 
@@ -38,6 +40,7 @@ Add business and technical metadata to datasets
 Tags datasets for discoverability
 In development
 https://github.com/org/metadata-enrich
+Enrichment Process
 
 ### Publish data product
 
@@ -66,3 +69,4 @@ Alert ML engineers that new data products are ready for use in Databricks
 Sends automated alerts to ML team
 In production
 https://github.com/org/notify-ml
+Alert Sent

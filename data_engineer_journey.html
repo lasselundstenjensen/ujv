@@ -16,6 +16,16 @@
         .persona { font-size: 1.5rem; font-weight: bold; margin-bottom: 1.5rem; text-align: center; color: #bb86fc; }
         #download-container { text-align: center; margin-top: 2rem; }
         .mdc-button--raised { background-color: #6200ee; }
+        .mermaid-chip {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 16px;
+            background-color: #424242;
+            color: #ffffff;
+            font-size: 0.8em;
+            margin-top: 5px;
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
@@ -33,31 +43,31 @@ E0 --> E1
 E1 --> E2
 E2 --> E3
 E3 --> E4
-E1_C0(["Data ingestion pipeline<br>Automates data collection and storage<br>[code](https://github.com/org/data-ingest)"])
-E2_C0(["Data validation capability<br>Ensures data meets quality standards<br>[code](https://github.com/org/data-validate)"])
-E3_C0(["Metadata enrichment<br>Tags datasets for discoverability<br>[code](https://github.com/org/metadata-enrich)"])
-E3_C1(["Data catalog integration<br>Registers data product in catalog<br>[code](https://github.com/org/data-catalog)"])
-E4_C0(["Access control<br>Manages permissions for data product usage<br>[code](https://github.com/org/data-access)"])
-E4_C1(["Notification service<br>Sends automated alerts to ML team<br>[code](https://github.com/org/notify-ml)"])
-E1 --> E1_C0
-E2 --> E2_C0
-E3 --> E3_C0
-E3 --> E3_C1
-E4 --> E4_C0
-E4 --> E4_C1
-style E1_C0 fill:#64B5F6,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px
-style E2_C0 fill:#81C784,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px
-style E3_C0 fill:#FFD54F,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px
-style E3_C1 fill:#CF6679,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px
-style E4_C0 fill:#CF6679,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px
-style E4_C1 fill:#64B5F6,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px
+E1_C0(["Data ingestion pipeline<br>Automates data collection and storage<br><div class='mermaid-chip'>capability</div>"])
+E2_C0(["Data validation capability<br>Ensures data meets quality standards<br><div class='mermaid-chip'>capability</div>"])
+E3_C0(["Metadata enrichment<br>Tags datasets for discoverability<br><div class='mermaid-chip'>capability</div>"])
+E3_C1(["Data catalog integration<br>Registers data product in catalog<br><div class='mermaid-chip'>capability</div>"])
+E4_C0(["Access control<br>Manages permissions for data product usage<br><div class='mermaid-chip'>capability</div>"])
+E4_C1(["Notification service<br>Sends automated alerts to ML team<br><div class='mermaid-chip'>capability</div>"])
+E1 -- "Data Flow" --- E1_C0
+E2 -- "Validation Check" --- E2_C0
+E3 -- "Enrichment Process" --- E3_C0
+E3 --- E3_C1
+E4 --- E4_C0
+E4 -- "Alert Sent" --- E4_C1
+style E1_C0 fill:#64B5F6,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
+style E2_C0 fill:#81C784,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
+style E3_C0 fill:#FFD54F,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
+style E3_C1 fill:#CF6679,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
+style E4_C0 fill:#CF6679,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
+style E4_C1 fill:#64B5F6,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
 click E1_C0 "https://github.com/org/data-ingest"
 click E2_C0 "https://github.com/org/data-validate"
 click E3_C0 "https://github.com/org/metadata-enrich"
 click E3_C1 "https://github.com/org/data-catalog"
 click E4_C0 "https://github.com/org/data-access"
 click E4_C1 "https://github.com/org/notify-ml"
-classDef event_card fill:#2D2D2D,stroke:#444,stroke-width:2px,rx:8px,ry:8px;
+classDef event_card fill:#2D2D2D,stroke:#444,stroke-width:2px,rx:8px,ry:8px,font-size:18px;
         </div>
         <div id="download-container">
             <button class="mdc-button mdc-button--raised" id="download-btn">

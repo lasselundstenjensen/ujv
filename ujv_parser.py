@@ -23,6 +23,16 @@ TEMPLATE_HTML = """
         .persona {{ font-size: 1.5rem; font-weight: bold; margin-bottom: 1.5rem; text-align: center; color: #bb86fc; }}
         #download-container {{ text-align: center; margin-top: 2rem; }}
         .mdc-button--raised {{ background-color: #6200ee; }}
+        .mermaid-chip {{
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 16px;
+            background-color: #424242;
+            color: #ffffff;
+            font-size: 0.8em;
+            margin-top: 5px;
+            white-space: nowrap;
+        }}
     </style>
 </head>
 <body>
@@ -113,7 +123,8 @@ def parse_markdown(md_text):
                 'title': line[5:].strip(),
                 'description': '',
                 'state': '',
-                'link': ''
+                'link': '',
+                'edge_text': ''
             }
             mode = 'cap_desc'
             continue
@@ -134,6 +145,8 @@ def parse_markdown(md_text):
                 current_cap['state'] = line
             elif not current_cap['link']:
                 current_cap['link'] = line
+            elif not current_cap['edge_text']:
+                current_cap['edge_text'] = line
     # Flush last event/capability
     if current_cap and current_event:
         current_event['capabilities'].append(current_cap)
@@ -173,10 +186,14 @@ def build_mermaid(parsed):
             state = cap.get('state', '')
             cap_label = f"{cap['title']}<br>{escape_mermaid(cap['description'])}"
             if cap.get('link'):
-                cap_label += f"<br>[code]({cap['link']})"
+                cap_label += f"<br><div class='mermaid-chip'>capability</div>"
             
             cap_nodes.append(f'{cid}(["{cap_label}"])')
-            cap_edges.append(f'{eid} --> {cid}')
+            edge_text = cap.get('edge_text', '').strip()
+            if edge_text:
+                cap_edges.append(f'{eid} -- "{edge_text}" --- {cid}')
+            else:
+                cap_edges.append(f'{eid} --- {cid}')
 
             if cap.get('link'):
                 link_url = cap['link']
@@ -187,7 +204,7 @@ def build_mermaid(parsed):
                 colors = STATE_COLORS[state]
                 fill_color = colors['fill']
                 text_color = colors['color']
-                mermaid_styles.append(f"style {cid} fill:{fill_color},stroke:#333,color:{text_color},stroke-width:2px,rx:8px,ry:8px")
+                mermaid_styles.append(f"style {cid} fill:{fill_color},stroke:#333,color:{text_color},stroke-width:2px,rx:8px,ry:8px,font-size:18px")
 
     # Mermaid code
     mermaid = ["flowchart TD"]
@@ -197,7 +214,7 @@ def build_mermaid(parsed):
     mermaid.extend(cap_edges)
     mermaid.extend(mermaid_styles)
     mermaid.extend(mermaid_links)
-    mermaid.append("classDef event_card fill:#2D2D2D,stroke:#444,stroke-width:2px,rx:8px,ry:8px;")
+    mermaid.append("classDef event_card fill:#2D2D2D,stroke:#444,stroke-width:2px,rx:8px,ry:8px,font-size:18px;")
     return '\n'.join(mermaid)
 
 def main():
