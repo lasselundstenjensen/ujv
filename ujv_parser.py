@@ -12,13 +12,17 @@ TEMPLATE_HTML = """
     <meta charset=\"UTF-8\">
     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
     <title>User Journey Visualiser</title>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script src=\"https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js\"></script>
+    <link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap\" rel=\"stylesheet\">
+    <link rel=\"stylesheet\" href=\"https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css\">
+    <script src=\"https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js\"></script>
     <style>
-        body {{ font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f8f9fa; }}
-        .container {{ max-width: 900px; margin: 2rem auto; background: #fff; border-radius: 8px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }}
-        h1 {{ text-align: center; }}
-        #download-btn {{ margin: 1rem auto; display: block; }}
-        .persona {{ font-size: 1.3rem; font-weight: bold; margin-bottom: 1rem; text-align: center; }}
+        body {{ font-family: 'Roboto', sans-serif; margin: 0; padding: 0; background-color: #121212; color: #ffffff; }}
+        .container {{ max-width: 1100px; margin: 2rem auto; background: #1e1e1e; border-radius: 8px; padding: 2rem; box-shadow: 0 8px 16px rgba(0,0,0,0.3); }}
+        h1 {{ text-align: center; color: #ffffff; font-weight: 500; }}
+        .persona {{ font-size: 1.5rem; font-weight: bold; margin-bottom: 1.5rem; text-align: center; color: #bb86fc; }}
+        #download-container {{ text-align: center; margin-top: 2rem; }}
+        .mdc-button--raised {{ background-color: #6200ee; }}
     </style>
 </head>
 <body>
@@ -28,27 +32,36 @@ TEMPLATE_HTML = """
         <div class=\"mermaid\" id=\"ujv-diagram\">
 {mermaid_code}
         </div>
-        <button id=\"download-btn\">Download as SVG</button>
+        <div id=\"download-container\">
+            <button class=\"mdc-button mdc-button--raised\" id=\"download-btn\">
+                <span class=\"mdc-button__label\">Download as SVG</span>
+            </button>
+        </div>
     </div>
     <script>
-        mermaid.initialize({{ startOnLoad: true }});
+                mermaid.initialize({{ startOnLoad: true, theme: 'dark' }});
+        mdc.autoInit();
         document.addEventListener('DOMContentLoaded', function() {{
-            document.getElementById('download-btn').onclick = function() {{
-                const svg = document.querySelector('#ujv-diagram svg');
-                if (svg) {{
-                    const serializer = new XMLSerializer();
-                    const source = serializer.serializeToString(svg);
-                    const blob = new Blob([source], {{type: 'image/svg+xml;charset=utf-8'}});
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'user_journey.svg';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                }}
-            }};
+            const downloadBtn = document.getElementById('download-btn');
+            if(downloadBtn) {{
+                mdc.ripple.MDCRipple.attachTo(downloadBtn);
+                downloadBtn.addEventListener('click', function() {{
+                    const svg = document.querySelector('#ujv-diagram svg');
+                    if (svg) {{
+                        const serializer = new XMLSerializer();
+                        const source = serializer.serializeToString(svg);
+                        const blob = new Blob([source], {{type: 'image/svg+xml;charset=utf-8'}});
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'user_journey.svg';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    }}
+                }});
+            }}
         }});
     </script>
 </body>
@@ -57,10 +70,10 @@ TEMPLATE_HTML = """
 
 # Color mapping for capability states
 STATE_COLORS = {
-    'Not started': 'red',
-    'In development': 'orange',
-    'In testing, release candidate': 'green',
-    'In production': 'blue',
+    'Not started':                  {'fill': '#CF6679', 'color': '#000000'},
+    'In development':               {'fill': '#FFD54F', 'color': '#000000'},
+    'In testing, release candidate':{'fill': '#81C784', 'color': '#000000'},
+    'In production':                {'fill': '#64B5F6', 'color': '#000000'},
 }
 
 
@@ -143,6 +156,8 @@ def build_mermaid(parsed):
     edges = []
     cap_nodes = []
     cap_edges = []
+    mermaid_styles = []
+
     for idx, event in enumerate(events):
         eid = f"E{idx}"
         desc = escape_mermaid(event['description'])
@@ -155,21 +170,26 @@ def build_mermaid(parsed):
         for cidx, cap in enumerate(event['capabilities']):
             cid = f"{eid}_C{cidx}"
             state = cap.get('state', '')
-            color = STATE_COLORS.get(state, 'gray')
             cap_label = f"{cap['title']}<br>{escape_mermaid(cap['description'])}"
             if cap.get('link'):
                 cap_label += f"<br>[code]({cap['link']})"
-            cap_nodes.append(f'{cid}(["{cap_label}"]):::cap_{color}')
+            
+            cap_nodes.append(f'{cid}(["{cap_label}"])')
             cap_edges.append(f'{eid} --> {cid}')
+
+            if state in STATE_COLORS:
+                colors = STATE_COLORS[state]
+                fill_color = colors['fill']
+                text_color = colors['color']
+                mermaid_styles.append(f"style {cid} fill:{fill_color},stroke:#333,color:{text_color}")
+
     # Mermaid code
     mermaid = ["flowchart TD"]
     mermaid.extend(nodes)
     mermaid.extend(edges)
     mermaid.extend(cap_nodes)
     mermaid.extend(cap_edges)
-    # Add style for capability states
-    for state, color in STATE_COLORS.items():
-        mermaid.append(f'classDef cap_{color} fill:{color},stroke:#333,color:#fff;')
+    mermaid.extend(mermaid_styles)
     return '\n'.join(mermaid)
 
 def main():
