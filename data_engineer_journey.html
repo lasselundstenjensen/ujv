@@ -34,33 +34,33 @@
         <div class="persona">Persona: Data Engineer</div>
         <div class="mermaid" id="ujv-diagram">
 flowchart TD
-E0(["🗄️ Ingest raw data<br>Collect raw data from multiple sources (APIs, databases, files)"]):::event_card
-E1(["🧹 Clean and validate data<br>Apply data quality checks and transformations"]):::event_card
-E2(["🏷️ Enrich data with metadata<br>Add business and technical metadata to datasets"]):::event_card
-E3(["🚀 Publish data product<br>Make curated datasets available for downstream users"]):::event_card
-E4(["🔔 Notify ML team<br>Alert ML engineers that new data products are ready for use in Databricks"]):::event_card
+E0(["🗄️ <b><span style='font-size: 20px;'>Ingest raw data</span></b><br>Collect raw data from multiple sources (APIs, databases, files)"]):::event_card
+E1(["🧹 <b><span style='font-size: 20px;'>Clean and validate data</span></b><br>Apply data quality checks and transformations"]):::event_card
+E2(["🏷️ <b><span style='font-size: 20px;'>Enrich data with metadata</span></b><br>Add business and technical metadata to datasets"]):::event_card
+E3(["🚀 <b><span style='font-size: 20px;'>Publish data product</span></b><br>Make curated datasets available for downstream users"]):::event_card
+E4(["🔔 <b><span style='font-size: 20px;'>Notify ML team</span></b><br>Alert ML engineers that new data products are ready for use in Databricks"]):::event_card
 E0 --> E1
 E1 --> E2
 E2 --> E3
 E3 --> E4
-E1_C0(["Data ingestion pipeline<br>Automates data collection and storage<br><div class='mermaid-chip'>capability</div>"])
-E2_C0(["Data validation capability<br>Ensures data meets quality standards<br><div class='mermaid-chip'>capability</div>"])
-E3_C0(["Metadata enrichment<br>Tags datasets for discoverability<br><div class='mermaid-chip'>capability</div>"])
-E3_C1(["Data catalog integration<br>Registers data product in catalog<br><div class='mermaid-chip'>capability</div>"])
-E4_C0(["Access control<br>Manages permissions for data product usage<br><div class='mermaid-chip'>capability</div>"])
-E4_C1(["Notification service<br>Sends automated alerts to ML team<br><div class='mermaid-chip'>capability</div>"])
+E1_C0(["<b>Capability</b><br>Data ingestion pipeline<br>Automates data collection and storage<br><div class='mermaid-chip'>https://github.com/org/data-ingest</div>"])
+E2_C0(["<b>Capability</b><br>Data validation capability<br>Ensures data meets quality standards<br><div class='mermaid-chip'>https://github.com/org/data-validate</div>"])
+E3_C0(["<b>Capability</b><br>Metadata enrichment<br>Tags datasets for discoverability<br><div class='mermaid-chip'>https://github.com/org/metadata-enrich</div>"])
+E3_C1(["<b>Capability</b><br>Data catalog integration<br>Registers data product in catalog<br><div class='mermaid-chip'>https://github.com/org/data-catalog</div>"])
+E4_C0(["<b>Capability</b><br>Access control<br>Manages permissions for data product usage<br><div class='mermaid-chip'>https://github.com/org/data-access</div>"])
+E4_C1(["<b>Capability</b><br>Notification service<br>Sends automated alerts to ML team<br><div class='mermaid-chip'>https://github.com/org/notify-ml</div>"])
 E1 -- "Data Flow" --- E1_C0
 E2 -- "Validation Check" --- E2_C0
 E3 -- "Enrichment Process" --- E3_C0
 E3 --- E3_C1
 E4 --- E4_C0
 E4 -- "Alert Sent" --- E4_C1
-style E1_C0 fill:#64B5F6,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
-style E2_C0 fill:#81C784,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
-style E3_C0 fill:#FFD54F,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
-style E3_C1 fill:#CF6679,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
-style E4_C0 fill:#CF6679,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
-style E4_C1 fill:#64B5F6,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
+style E1_C0 fill:#64B5F6,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:50px
+style E2_C0 fill:#81C784,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:50px
+style E3_C0 fill:#FFD54F,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:50px
+style E3_C1 fill:#CF6679,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:50px
+style E4_C0 fill:#CF6679,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:50px
+style E4_C1 fill:#64B5F6,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:50px
 click E1_C0 "https://github.com/org/data-ingest"
 click E2_C0 "https://github.com/org/data-validate"
 click E3_C0 "https://github.com/org/metadata-enrich"

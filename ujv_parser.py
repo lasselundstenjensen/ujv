@@ -175,7 +175,7 @@ def build_mermaid(parsed):
     for idx, event in enumerate(events):
         eid = f"E{idx}"
         desc = escape_mermaid(event['description'])
-        label = f"{event['title']}<br>{desc}"
+        label = f"<b><span style='font-size: 20px;'>{event['title']}</span></b><br>{desc}"
         if event['icon']:
             label = f"{event['icon']} {label}"
         nodes.append(f'{eid}(["{label}"]):::event_card')
@@ -184,9 +184,9 @@ def build_mermaid(parsed):
         for cidx, cap in enumerate(event['capabilities']):
             cid = f"{eid}_C{cidx}"
             state = cap.get('state', '')
-            cap_label = f"{cap['title']}<br>{escape_mermaid(cap['description'])}"
+            cap_label = f"<b>Capability</b><br>{cap['title']}<br>{escape_mermaid(cap['description'])}"
             if cap.get('link'):
-                cap_label += f"<br><div class='mermaid-chip'>capability</div>"
+                cap_label += f"<br><div class='mermaid-chip'>{cap['link']}</div>"
             
             cap_nodes.append(f'{cid}(["{cap_label}"])')
             edge_text = cap.get('edge_text', '').strip()
