@@ -71,5 +71,3 @@ https://github.com/org/model-train
 - You can adjust styles in the HTML template
 
 ---
-
-If you have issues or want to extend the tool, just edit `ujv_parser.py`.
