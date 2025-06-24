@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Journey Visualiser</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f8f9fa; }
+        .container { max-width: 900px; margin: 2rem auto; background: #fff; border-radius: 8px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h1 { text-align: center; }
+        #download-btn { margin: 1rem auto; display: block; }
+        .persona { font-size: 1.3rem; font-weight: bold; margin-bottom: 1rem; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Journey Visualiser</h1>
+        <div class="persona">Persona: Data Engineer</div>
+        <div class="mermaid" id="ujv-diagram">
+flowchart TD
+E0(["🗄️ Ingest raw data<br>Collect raw data from multiple sources (APIs, databases, files)"])
+E1(["🧹 Clean and validate data<br>Apply data quality checks and transformations"])
+E2(["🏷️ Enrich data with metadata<br>Add business and technical metadata to datasets"])
+E3(["🚀 Publish data product<br>Make curated datasets available for downstream users"])
+E4(["🔔 Notify ML team<br>Alert ML engineers that new data products are ready for use in Databricks"])
+E0 --> E1
+E1 --> E2
+E2 --> E3
+E3 --> E4
+E1_C0(["Data ingestion pipeline<br>Automates data collection and storage<br>[code](https://github.com/org/data-ingest)"]):::cap_blue
+E2_C0(["Data validation capability<br>Ensures data meets quality standards<br>[code](https://github.com/org/data-validate)"]):::cap_green
+E3_C0(["Metadata enrichment<br>Tags datasets for discoverability<br>[code](https://github.com/org/metadata-enrich)"]):::cap_orange
+E3_C1(["Data catalog integration<br>Registers data product in catalog<br>[code](https://github.com/org/data-catalog)"]):::cap_red
+E4_C0(["Access control<br>Manages permissions for data product usage<br>[code](https://github.com/org/data-access)"]):::cap_red
+E4_C1(["Notification service<br>Sends automated alerts to ML team<br>[code](https://github.com/org/notify-ml)"]):::cap_blue
+E1 --> E1_C0
+E2 --> E2_C0
+E3 --> E3_C0
+E3 --> E3_C1
+E4 --> E4_C0
+E4 --> E4_C1
+classDef cap_red fill:red,stroke:#333,color:#fff;
+classDef cap_orange fill:orange,stroke:#333,color:#fff;
+classDef cap_green fill:green,stroke:#333,color:#fff;
+classDef cap_blue fill:blue,stroke:#333,color:#fff;
+        </div>
+        <button id="download-btn">Download as SVG</button>
+    </div>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('download-btn').onclick = function() {
+                const svg = document.querySelector('#ujv-diagram svg');
+                if (svg) {
+                    const serializer = new XMLSerializer();
+                    const source = serializer.serializeToString(svg);
+                    const blob = new Blob([source], {type: 'image/svg+xml;charset=utf-8'});
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'user_journey.svg';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }
+            };
+        });
+    </script>
+</body>
+</html>

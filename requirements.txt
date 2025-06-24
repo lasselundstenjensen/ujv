@@ -1,0 +1,3 @@
+# Only standard library is used, but if you want to extend:
+# pip install -r requirements.txt
+# No external dependencies required for current version
