@@ -35,4 +35,3 @@ jobs:
         name: user-journey-html
         path: ${{ steps.get_info.outputs.output_filename }}
         retention-days: 5
-      working-directory: ${{ github.workspace }}
