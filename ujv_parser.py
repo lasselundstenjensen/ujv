@@ -165,7 +165,7 @@ def build_mermaid(parsed):
         label = f"{event['title']}<br>{desc}"
         if event['icon']:
             label = f"{event['icon']} {label}"
-        nodes.append(f'{eid}(["{label}"])')
+        nodes.append(f'{eid}(["{label}"]):::event_card')
         if idx > 0:
             edges.append(f"E{idx-1} --> {eid}")
         for cidx, cap in enumerate(event['capabilities']):
@@ -187,7 +187,7 @@ def build_mermaid(parsed):
                 colors = STATE_COLORS[state]
                 fill_color = colors['fill']
                 text_color = colors['color']
-                mermaid_styles.append(f"style {cid} fill:{fill_color},stroke:#333,color:{text_color}")
+                mermaid_styles.append(f"style {cid} fill:{fill_color},stroke:#333,color:{text_color},stroke-width:2px,rx:8px,ry:8px")
 
     # Mermaid code
     mermaid = ["flowchart TD"]
@@ -197,6 +197,7 @@ def build_mermaid(parsed):
     mermaid.extend(cap_edges)
     mermaid.extend(mermaid_styles)
     mermaid.extend(mermaid_links)
+    mermaid.append("classDef event_card fill:#2D2D2D,stroke:#444,stroke-width:2px,rx:8px,ry:8px;")
     return '\n'.join(mermaid)
 
 def main():
