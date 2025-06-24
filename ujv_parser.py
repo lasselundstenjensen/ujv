@@ -157,6 +157,7 @@ def build_mermaid(parsed):
     cap_nodes = []
     cap_edges = []
     mermaid_styles = []
+    mermaid_links = []
 
     for idx, event in enumerate(events):
         eid = f"E{idx}"
@@ -177,6 +178,11 @@ def build_mermaid(parsed):
             cap_nodes.append(f'{cid}(["{cap_label}"])')
             cap_edges.append(f'{eid} --> {cid}')
 
+            if cap.get('link'):
+                link_url = cap['link']
+                mermaid_links.append(f'click {cid} "{link_url}"')
+
+
             if state in STATE_COLORS:
                 colors = STATE_COLORS[state]
                 fill_color = colors['fill']
@@ -190,6 +196,7 @@ def build_mermaid(parsed):
     mermaid.extend(cap_nodes)
     mermaid.extend(cap_edges)
     mermaid.extend(mermaid_styles)
+    mermaid.extend(mermaid_links)
     return '\n'.join(mermaid)
 
 def main():
