@@ -27,6 +27,10 @@ jobs:
         echo "output_filename=${INPUT_MD_BASENAME}.html" >> $GITHUB_OUTPUT
       working-directory: ${{ github.workspace }}
 
+    - name: Run Validation
+      run: python ujv_validator.py sample_data_engineer_journey.md
+      working-directory: ${{ github.workspace }}
+
     - name: Generate HTML
       run: python ujv_parser.py sample_data_engineer_journey.md
       working-directory: ${{ github.workspace }}
