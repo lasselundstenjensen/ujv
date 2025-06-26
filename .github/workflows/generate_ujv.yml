@@ -18,22 +18,20 @@ jobs:
       with:
         python-version: '3.x' # Use the latest Python 3.x
 
-    - name: Get current date and persona name
-      id: get_info
+    - name: Set output filename
+      id: set_output_filename
       run: |
-        DATE=$(date +%Y-%m-%d)
-        PERSONA=$(grep -A 1 "## Persona" sample_data_engineer_journey.md | tail -n 1 | xargs)
-        echo "Generated filename: ${DATE}-${PERSONA}.html"
-        echo "output_filename=${DATE}-${PERSONA}.html" >> $GITHUB_OUTPUT
+        INPUT_MD_BASENAME=$(basename sample_data_engineer_journey.md .md)
+        echo "output_filename=${INPUT_MD_BASENAME}.html" >> $GITHUB_OUTPUT
       working-directory: ${{ github.workspace }}
 
     - name: Generate HTML
-      run: python ujv_parser.py sample_data_engineer_journey.md -o ${{ steps.get_info.outputs.output_filename }}
+      run: python ujv_parser.py sample_data_engineer_journey.md
       working-directory: ${{ github.workspace }}
 
     - name: Upload HTML artifact
       uses: actions/upload-artifact@v4
       with:
         name: user-journey-html
-        path: ${{ steps.get_info.outputs.output_filename }}
+        path: output/${{ steps.set_output_filename.outputs.output_filename }}
         retention-days: 5
