@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Journey Visualiser</title>
+    <title>User Journey</title>
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
@@ -30,7 +30,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>User Journey Visualiser</h1>
+        <h1>User Journey</h1>
         <div class="persona">Persona: Data Engineer</div>
         <div class="mermaid" id="ujv-diagram">
 flowchart TD
@@ -55,12 +55,12 @@ E3 -- "Enrichment Process" --- E3_C0
 E3 --- E3_C1
 E4 --- E4_C0
 E4 -- "Alert Sent" --- E4_C1
-style E1_C0 fill:#64B5F6,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:50px
-style E2_C0 fill:#81C784,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:50px
-style E3_C0 fill:#FFD54F,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:50px
-style E3_C1 fill:#CF6679,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:50px
-style E4_C0 fill:#CF6679,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:50px
-style E4_C1 fill:#64B5F6,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:50px
+style E1_C0 fill:#64B5F6,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
+style E2_C0 fill:#81C784,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
+style E3_C0 fill:#FFD54F,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
+style E3_C1 fill:#CF6679,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
+style E4_C0 fill:#CF6679,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
+style E4_C1 fill:#64B5F6,stroke:#333,color:#000000,stroke-width:2px,rx:8px,ry:8px,font-size:18px
 click E1_C0 "https://github.com/org/data-ingest"
 click E2_C0 "https://github.com/org/data-validate"
 click E3_C0 "https://github.com/org/metadata-enrich"

@@ -11,7 +11,7 @@ TEMPLATE_HTML = """
 <head>
     <meta charset=\"UTF-8\">
     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
-    <title>User Journey Visualiser</title>
+    <title>User Journey</title>
     <script src=\"https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js\"></script>
     <link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap\" rel=\"stylesheet\">
     <link rel=\"stylesheet\" href=\"https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css\">
@@ -37,7 +37,7 @@ TEMPLATE_HTML = """
 </head>
 <body>
     <div class=\"container\">
-        <h1>User Journey Visualiser</h1>
+        <h1>User Journey</h1>
         <div class=\"persona\">Persona: {persona}</div>
         <div class=\"mermaid\" id=\"ujv-diagram\">
 {mermaid_code}
@@ -220,16 +220,24 @@ def build_mermaid(parsed):
 def main():
     parser = argparse.ArgumentParser(description='User Journey Visualiser: Markdown to Flowchart HTML')
     parser.add_argument('input_md', help='Input markdown file describing user journey')
-    parser.add_argument('-o', '--output', default='user_journey.html', help='Output HTML file')
     args = parser.parse_args()
+
+    OUTPUT_DIR = Path("output")
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    input_path = Path(args.input_md)
+    output_filename = input_path.stem + ".html"
+    output_filepath = OUTPUT_DIR / output_filename
+
     with open(args.input_md, 'r', encoding='utf-8') as f:
         md = f.read()
     parsed = parse_markdown(md)
     mermaid_code = build_mermaid(parsed)
     html = TEMPLATE_HTML.format(persona=parsed['persona'] or '', mermaid_code=mermaid_code)
-    with open(args.output, 'w', encoding='utf-8') as f:
+
+    with open(output_filepath, 'w', encoding='utf-8') as f:
         f.write(html)
-    print(f"User journey visualisation written to {args.output}")
+    print(f"User journey visualisation written to {output_filepath}")
 
 if __name__ == '__main__':
     main()
