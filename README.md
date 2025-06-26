@@ -4,7 +4,8 @@
 
 This tool generates a visual representation of a user journey from a simple markdown file.
 
-![image](https://github.com/user-attachments/assets/3bbb0eac-95e7-4b27-891d-1e19b86abc61)
+![image](https://github.com/user-attachments/assets/0bb59399-74f5-4439-a6ca-85353386a7ab)
+
 
 ## Markdown Format for User Journeys
 
