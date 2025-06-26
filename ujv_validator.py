@@ -146,24 +146,44 @@ def validate_main_markdown(filepath: Path) -> list[str]:
                 # Description is the first non-empty line
                 description = non_empty_lines_after_event_title[0]
                 
-                # Check for Icon (second non-empty line, if exists)
-                if len(non_empty_lines_after_event_title) < 2:
-                    errors.append(f"Error in {filepath} (line {i+1}): Event '{stripped_line[4:]}' is missing an icon.")
-                else:
-                    icon = non_empty_lines_after_event_title[1]
-                    if not re.match(r'^[\U0001F000-\U0001F9FF\U00002600-\U000026FF\U00002700-\U000027BF]\U0000FE0F?$', icon): # Check if it's a single emoji, optionally with a variation selector
-                        errors.append(f"Error in {filepath} (line {i+1}): Event '{stripped_line[4:]}' has an invalid icon format. Expected a single emoji.")
+                # Description is always the first non-empty line
+                description = non_empty_lines_after_event_title[0]
 
-                # Check for unexpected content after icon and before capability reference
-                # If there are more than 2 non-empty lines, and the 3rd one is not a capability reference, it's an error
-                if len(non_empty_lines_after_event_title) > 2:
-                    # The third non-empty line should be the capability reference
-                    potential_capability_ref = non_empty_lines_after_event_title[2]
-                    if not re.search(r'\[capability:([a-zA-Z0-9_-]+)\]', potential_capability_ref):
-                        errors.append(f"Error in {filepath} (line {i+1}): Event '{stripped_line[4:]}' has unexpected content before capability reference.")
-                    # If there are more than 3 non-empty lines, it's definitely unexpected content
-                    if len(non_empty_lines_after_event_title) > 3:
-                         errors.append(f"Error in {filepath} (line {i+1}): Event '{stripped_line[4:]}' has too many non-empty lines.")
+                # Check for Icon and Capability Reference based on the number of non-empty lines
+                if len(non_empty_lines_after_event_title) == 1:
+                    # Valid: only description is present (icon and capability reference are optional)
+                    pass
+                elif len(non_empty_lines_after_event_title) == 2:
+                    # Could be (description, icon) OR (description, capability_ref)
+                    second_line = non_empty_lines_after_event_title[1]
+                    is_icon = re.match(r'^[\U0001F000-\U0001F9FF\U00002600-\U000026FF\U00002700-\U000027BF]\U0000FE0F?$', second_line)
+                    is_capability_ref = re.search(r'\[capability:([a-zA-Z0-9_-]+)\]', second_line)
+
+                    if is_icon and is_capability_ref:
+                        errors.append(f"Error in {filepath} (line {i+1}): Event '{stripped_line[4:]}' has a line that appears to be both an icon and a capability reference. This is unexpected.")
+                    elif is_icon:
+                        # Valid: description, icon
+                        pass
+                    elif is_capability_ref:
+                        # Valid: description, capability_ref (icon was optional and skipped)
+                        pass
+                    else:
+                        errors.append(f"Error in {filepath} (line {i+1}): Event '{stripped_line[4:]}' has unexpected content after description. Expected an optional icon or capability reference.")
+                elif len(non_empty_lines_after_event_title) == 3:
+                    # Must be (description, icon, capability_ref)
+                    second_line = non_empty_lines_after_event_title[1]
+                    third_line = non_empty_lines_after_event_title[2]
+
+                    is_icon = re.match(r'^[\U0001F000-\U0001F9FF\U00002600-\U000026FF\U00002700-\U000027BF]\U0000FE0F?$', second_line)
+                    is_capability_ref = re.search(r'\[capability:([a-zA-Z0-9_-]+)\]', third_line)
+
+                    if not is_icon:
+                        errors.append(f"Error in {filepath} (line {i+1}): Event '{stripped_line[4:]}' has content where an icon was expected, but it's not a valid icon.")
+                    if not is_capability_ref:
+                        errors.append(f"Error in {filepath} (line {i+1}): Event '{stripped_line[4:]}' has content where a capability reference was expected, but it's not a valid reference.")
+                else:
+                    # More than 3 non-empty lines
+                    errors.append(f"Error in {filepath} (line {i+1}): Event '{stripped_line[4:]}' has too many non-empty lines. Expected at most 3 (description, optional icon, optional capability reference).")
 
             continue
         elif stripped_line.startswith("#### "): # This should not appear in main markdown anymore
