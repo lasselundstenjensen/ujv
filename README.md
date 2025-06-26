@@ -131,6 +131,8 @@ Data Quality
 
 ## Usage
 
+### Generating HTML Visualization
+
 To generate the HTML visualization, run the `ujv_parser.py` script with your markdown file. The HTML file will be generated in the `output/` directory, named after your input markdown file.
 
 ```bash
@@ -146,3 +148,19 @@ python ujv_parser.py sample_data_engineer_journey.md
 The generated HTML file will be `output/your_journey.html` (or `output/sample_data_engineer_journey.html` in the example).
 
 The generated HTML file will include a Mermaid.js flowchart styled with Google Material Web Components, featuring a dark theme, Material 3 card-like nodes, clickable capability links, and custom edge text.
+
+### Validating Markdown Files
+
+To validate the structure and content of your user journey and capability markdown files, run the `ujv_validator.py` script with your main user journey markdown file.
+
+```bash
+python ujv_validator.py your_journey.md
+```
+
+Example:
+
+```bash
+python ujv_validator.py sample_data_engineer_journey.md
+```
+
+The validator will output any errors or warnings found, helping ensure your markdown adheres to the specified format.
