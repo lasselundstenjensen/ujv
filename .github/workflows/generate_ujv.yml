@@ -35,3 +35,11 @@ jobs:
         name: user-journey-html
         path: output/${{ steps.set_output_filename.outputs.output_filename }}
         retention-days: 5
+
+    - name: Create Pre-release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: pre-release-${{ github.run_number }}
+        name: Pre-release User Journey ${{ github.run_number }}
+        prerelease: true
+        files: output/${{ steps.set_output_filename.outputs.output_filename }}
