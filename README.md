@@ -6,7 +6,6 @@ This tool generates a visual representation of a user journey from a simple mark
 
 ![image](https://github.com/user-attachments/assets/3bbb0eac-95e7-4b27-891d-1e19b86abc61)
 
-
 ## Markdown Format for User Journeys
 
 The markdown file should be structured into `Persona` and `Events` sections. Each event can contain multiple `Capabilities`.
