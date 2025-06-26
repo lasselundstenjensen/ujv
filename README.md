@@ -6,7 +6,6 @@ This tool generates a visual representation of a user journey from a simple mark
 
 ![image](https://github.com/user-attachments/assets/0bb59399-74f5-4439-a6ca-85353386a7ab)
 
-
 ## Markdown Format for User Journeys
 
 The markdown file should be structured into `Persona` and `Events` sections. Each event can contain multiple `Capabilities`.
@@ -51,6 +50,7 @@ Collect raw data from multiple sources (APIs, databases, files)
 
 ### 3. Capabilities
 
+Capabilities are defined in separate markdown files within a `capabilities/` subdirectory.
 Under each event, define capabilities using a level 4 heading. Each capability requires a title, description, and state. It can optionally include a link and an edge text.
 
 ```markdown
@@ -62,7 +62,11 @@ Under each event, define capabilities using a level 4 heading. Each capability r
 [Optional Edge Text (text displayed on the edge connecting event to capability)]
 ```
 
-Example:
+- **State**: The state determines the color of the capability node. Supported states are: `Not started`, `In development`, `In testing, release candidate`, `In production`.
+- **Link**: If provided, the link will be displayed as a Material 3 chip within the capability node. The capability node will also be clickable, navigating to this URL.
+- **Edge Text**: If provided, this text will appear on the edge connecting the event node to the capability node. The edge will be an open line (no arrow).
+
+Example `capabilities/data-ingestion-pipeline.md` content:
 
 ```markdown
 #### Data ingestion pipeline
@@ -73,11 +77,11 @@ https://github.com/org/data-ingest
 Data Flow
 ```
 
-- **State**: The state determines the color of the capability node. Supported states are: `Not started`, `In development`, `In testing, release candidate`, `In production`.
-- **Link**: If provided, the link will be displayed as a Material 3 chip within the capability node. The capability node will also be clickable, navigating to this URL.
-- **Edge Text**: If provided, this text will appear on the edge connecting the event node to the capability node. The edge will be an open line (no arrow).
+To include a capability in your main user journey markdown, reference it using the `[capability:filename_stem]` format, where `filename_stem` is the name of the capability markdown file without the `.md` extension.
 
 ## Example Markdown Structure
+
+**User journey markdown:**
 
 ```markdown
 # User Journey
@@ -93,24 +97,36 @@ Data Engineer
 Collect raw data from multiple sources (APIs, databases, files)
 🗄️
 
-#### Data ingestion pipeline
-
-Automates data collection and storage
-In production
-https://github.com/org/data-ingest
-Data Flow
+[capability:data-ingestion-pipeline]
 
 ### Clean and validate data
 
 Apply data quality checks and transformations
 🧹
 
+[capability:data-validation-capability]
+```
+
+**Capability markdown: capabilities/data-ingestion-pipeline.md:**
+
+```markdown
+#### Data ingestion pipeline
+
+Automates data collection and storage
+In production
+https://github.com/org/data-ingest
+Data Flow
+```
+
+**Capability markdown: capabilities/data-validation-capability.md:**
+
+```markdown
 #### Data validation capability
 
-Ensures data meets quality standards
-In testing, release candidate
+Applies data quality checks and transformations
+In production
 https://github.com/org/data-validate
-Validation Check
+Data Quality
 ```
 
 ## Usage

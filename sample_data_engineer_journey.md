@@ -11,62 +11,34 @@ Data Engineer
 Collect raw data from multiple sources (APIs, databases, files)
 🗄️
 
-#### Data ingestion pipeline
-
-Automates data collection and storage
-In production
-https://github.com/org/data-ingest
-Data Flow
+[capability:data-ingestion-pipeline]
 
 ### Clean and validate data
 
 Apply data quality checks and transformations
 🧹
 
-#### Data validation capability
-
-Ensures data meets quality standards
-In testing, release candidate
-https://github.com/org/data-validate
-Validation Check
+[capability:data-validation-capability]
 
 ### Enrich data with metadata
 
 Add business and technical metadata to datasets
 🏷️
 
-#### Metadata enrichment
-
-Tags datasets for discoverability
-In development
-https://github.com/org/metadata-enrich
-Enrichment Process
+[capability:metadata-enrichment]
 
 ### Publish data product
 
 Make curated datasets available for downstream users
 🚀
 
-#### Data catalog integration
+[capability:data-catalog-integration]
 
-Registers data product in catalog
-Not started
-https://github.com/org/data-catalog
-
-#### Access control
-
-Manages permissions for data product usage
-Not started
-https://github.com/org/data-access
+[capability:access-control]
 
 ### Notify ML team
 
 Alert ML engineers that new data products are ready for use in Databricks
 🔔
 
-#### Notification service
-
-Sends automated alerts to ML team
-In production
-https://github.com/org/notify-ml
-Alert Sent
+[capability:notification-service]

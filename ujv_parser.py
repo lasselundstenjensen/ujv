@@ -157,8 +157,30 @@ def parse_markdown(md_text):
         'events': events
     }
 
+CAPABILITIES_DIR = Path("capabilities")
+
+def expand_capability_references(md_text: str) -> str:
+    """
+    Expands [capability:filename_stem] references in markdown text
+    by reading content from the capabilities directory.
+    """
+    expanded_md = []
+    for line in md_text.splitlines():
+        match = re.search(r'\[capability:([a-zA-Z0-9_-]+)\]', line)
+        if match:
+            capability_stem = match.group(1)
+            capability_filepath = CAPABILITIES_DIR / f"{capability_stem}.md"
+            if capability_filepath.exists():
+                with open(capability_filepath, 'r', encoding='utf-8') as f:
+                    expanded_md.append(f.read())
+            else:
+                expanded_md.append(f"[ERROR: Capability '{capability_stem}' not found]")
+        else:
+            expanded_md.append(line)
+    return '\n'.join(expanded_md)
+
 def escape_mermaid(text):
-    return text.replace('"', '\\"').replace("'", "\\'").replace("[", "\\[").replace("]", "\\]")
+    return text.replace('"', '\"').replace("'", "\'").replace("[", "\\[").replace("]", "\\]")
 
 def build_mermaid(parsed):
     """
@@ -231,7 +253,9 @@ def main():
 
     with open(args.input_md, 'r', encoding='utf-8') as f:
         md = f.read()
-    parsed = parse_markdown(md)
+
+    expanded_md = expand_capability_references(md)
+    parsed = parse_markdown(expanded_md)
     mermaid_code = build_mermaid(parsed)
     html = TEMPLATE_HTML.format(persona=parsed['persona'] or '', mermaid_code=mermaid_code)
 
