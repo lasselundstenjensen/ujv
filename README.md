@@ -115,16 +115,18 @@ Validation Check
 
 ## Usage
 
-To generate the HTML visualization, run the `ujv_parser.py` script with your markdown file and an output HTML file:
+To generate the HTML visualization, run the `ujv_parser.py` script with your markdown file. The HTML file will be generated in the `output/` directory, named after your input markdown file.
 
 ```bash
-python ujv_parser.py your_journey.md -o output_journey.html
+python ujv_parser.py your_journey.md
 ```
 
 Example:
 
 ```bash
-python ujv_parser.py sample_data_engineer_journey.md -o data_engineer_journey.html
+python ujv_parser.py sample_data_engineer_journey.md
 ```
+
+The generated HTML file will be `output/your_journey.html` (or `output/sample_data_engineer_journey.html` in the example).
 
 The generated HTML file will include a Mermaid.js flowchart styled with Google Material Web Components, featuring a dark theme, Material 3 card-like nodes, clickable capability links, and custom edge text.
