@@ -164,3 +164,6 @@ python ujv_validator.py sample_data_engineer_journey.md
 ```
 
 The validator will output any errors or warnings found, helping ensure your markdown adheres to the specified format.
+
+![image](https://github.com/user-attachments/assets/cc1ccf3c-e5ee-47c6-84ad-c0c9ee69f29e)
+
